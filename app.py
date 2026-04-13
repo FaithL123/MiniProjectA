@@ -1,4 +1,4 @@
-
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -6,7 +6,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, curren
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mysite.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql+pymysql://root:secret@mysql-db/guestbook_db')
 app.config['SECRET_KEY'] = 'devops_secret_key'
 
 db = SQLAlchemy(app)
