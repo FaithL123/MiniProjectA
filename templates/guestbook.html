@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio - Task B</title>
+</head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<body class="container mt-5">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm rounded p-2">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Faith Lim</a>
+    <div class="navbar-nav ms-auto">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link active" href="{{ url_for('guestbook') }}">Guestbook</a>
+      {% if current_user.is_authenticated %}
+        <span class="navbar-text mx-2">Welcome, <strong>{{ current_user.username }}</strong></span>
+        <a class="btn btn-outline-danger btn-sm" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a class="btn btn-outline-primary btn-sm" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+    <h1>Welcome to My Guestbook</h1>
+    <p>My name is Faith Lim</p>
+   <a href="https://www.linkedin.com/in/lim-yuen-yuen-faith" class="btn btn-outline-primary btn-sm" target="_blank">LinkedIn Profile</a>
+    <hr>
+
+    <h3>Project Comments</h3>
+
+    {% if current_user.is_authenticated %}
+       <form method="POST" action="{{ url_for('guestbook') }}">
+    <textarea name="comment" class="form-control mb-2" placeholder="Leave a comment..." required></textarea>
+    <button type="submit" class="btn btn-success">Post Comment</button>
+</form>
+    {% else %}
+        <p><em>Please <a href="{{ url_for('login') }}">login</a> to leave a comment.</em></p>
+    {% endif %}
+
+   <div id="comment-section">
+       {% for comment in comments %}
+       <div class="card mb-3 shadow-sm">
+           <div class="card-body">
+               <p class="card-text">{{ comment.content }}</p>
+               <footer class="blockquote-footer text-end">
+                   Posted by: <strong>{{ comment.commenter.username if comment.commenter else 'Anonymous' }}</strong>
+                   </footer>
+                   </div>
+                   </div>
+                   {% endfor %}
+    </div>
+
+</body>
+</html>
