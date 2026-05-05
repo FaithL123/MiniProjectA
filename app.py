@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user, login_required
 from datetime import datetime
-
+from sqlalchemy import func
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql+pymysql://root:secret@mysql-db/guestbook_db')
 app.config['SECRET_KEY'] = 'devops_secret_key'
@@ -25,7 +25,7 @@ class User(UserMixin, db.Model):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(4096))
-    posted = db.Column(db.DateTime, default=datetime.utcnow)
+    posted = db.Column(db.DateTime, default=func.now)
     commenter_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 @login_manager.user_loader
